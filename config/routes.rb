@@ -1,4 +1,6 @@
 MagruMessagingScaffold::Application.routes.draw do |map|
+  resources :messages
+
 
   root :to => "users#index"
 

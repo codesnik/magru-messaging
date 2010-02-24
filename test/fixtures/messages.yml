@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  parent: 
+  sender: 
+  recipient: 
+  subject: MyString
+  body: MyText
+  unread: false
+
+two:
+  parent: 
+  sender: 
+  recipient: 
+  subject: MyString
+  body: MyText
+  unread: false

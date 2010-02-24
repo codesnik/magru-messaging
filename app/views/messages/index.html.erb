@@ -1,0 +1,33 @@
+<h1>Listing messages</h1>
+
+<table>
+  <tr>
+    <th>Parent</th>
+    <th>Sender</th>
+    <th>Recipient</th>
+    <th>Subject</th>
+    <th>Body</th>
+    <th>Unread</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @messages.each do |message| %>
+  <tr>
+    <td><%= message.parent %></td>
+    <td><%= message.sender %></td>
+    <td><%= message.recipient %></td>
+    <td><%= message.subject %></td>
+    <td><%= message.body %></td>
+    <td><%= message.unread %></td>
+    <td><%= link_to 'Show', message %></td>
+    <td><%= link_to 'Edit', edit_message_path(message) %></td>
+    <td><%= link_to 'Destroy', message, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New message', new_message_path %>

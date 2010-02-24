@@ -1,0 +1,33 @@
+<p>
+  <b>Parent:</b>
+  <%= @message.parent %>
+</p>
+
+<p>
+  <b>Sender:</b>
+  <%= @message.sender %>
+</p>
+
+<p>
+  <b>Recipient:</b>
+  <%= @message.recipient %>
+</p>
+
+<p>
+  <b>Subject:</b>
+  <%= @message.subject %>
+</p>
+
+<p>
+  <b>Body:</b>
+  <%= @message.body %>
+</p>
+
+<p>
+  <b>Unread:</b>
+  <%= @message.unread %>
+</p>
+
+
+<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Back', messages_path %>
