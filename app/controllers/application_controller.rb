@@ -23,4 +23,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def forbid_action
+    redirect_to :back, :alert => "Action forbidden"
+  end
+
 end

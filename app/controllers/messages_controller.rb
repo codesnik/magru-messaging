@@ -17,6 +17,11 @@ class MessagesController < ApplicationController
   def show
     @message = Message.find(params[:id])
 
+    unless allowed_to_view?(@message)
+      forbid_action
+      return
+    end
+
     respond_with @message
   end
 
@@ -31,6 +36,11 @@ class MessagesController < ApplicationController
   # GET /messages/1/edit
   def edit
     @message = Message.find(params[:id])
+
+    unless allowed_to_change?(@message)
+      forbid_action
+      return
+    end
   end
 
   # POST /messages
@@ -54,6 +64,11 @@ class MessagesController < ApplicationController
   def update
     @message = Message.find(params[:id])
 
+    unless allowed_to_change?(@message)
+      forbid_action
+      return
+    end
+
     respond_to do |format|
       if @message.update_attributes(params[:message])
         format.html { redirect_to(@message, :notice => 'Message was successfully updated.') }
@@ -69,6 +84,12 @@ class MessagesController < ApplicationController
   # DELETE /messages/1.json
   def destroy
     @message = Message.find(params[:id])
+
+    unless allowed_to_change?(@message)
+      forbid_action
+      return
+    end
+
     @message.destroy
 
     respond_to do |format|
@@ -76,4 +97,17 @@ class MessagesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  protected
+
+  # TODO сделать before filter, или что-то в духе
+  def allowed_to_view?(message)
+    [message.recipient, message.sender].include?(current_user)
+  end
+
+  def allowed_to_change?(message)
+    current_user == message.sender && message.unread?
+  end
+  helper_method :allowed_to_view?, :allowed_to_change?
+
 end
