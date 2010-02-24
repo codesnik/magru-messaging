@@ -2,6 +2,8 @@ class MessagesController < ApplicationController
 
   respond_to :html, :json
 
+  before_filter :require_auth
+
   # GET /messages
   # GET /messages.json
   def index

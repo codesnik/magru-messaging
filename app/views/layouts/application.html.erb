@@ -8,15 +8,16 @@
 </head>
 <body>
 
+<%= link_to 'Users', users_path %>
+<%= link_to 'Messages', messages_path %>
+
 <% if current_user %>
   logged in as <%= current_user.name %>.
   <%= link_to 'logout', logout_users_path, :method => :delete %>
 <% end %>
 
-<%= link_to 'Users', users_path %>
-<%= link_to 'Messages', messages_path %>
-
 <p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
 
 <%= yield %>
 

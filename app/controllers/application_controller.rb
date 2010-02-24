@@ -9,11 +9,18 @@ class ApplicationController < ActionController::Base
       User.find(session[:user_id])
     end
   end
+  helper_method :current_user
 
   def current_user=(user)
     @current_user = user
     session[:user_id] = user ? user.id : nil
   end
 
-  helper_method :current_user
+  # filters
+  def require_auth
+    unless current_user
+      redirect_to users_path, :alert => 'Auth required.'
+    end
+  end
+
 end
