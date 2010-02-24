@@ -1,4 +1,17 @@
 MagruMessagingScaffold::Application.routes.draw do |map|
+
+  root :to => "users#index"
+
+  resources :users do
+    member do
+      post :login
+    end
+
+    collection do
+      delete :logout
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
