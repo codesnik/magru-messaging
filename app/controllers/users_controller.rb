@@ -4,9 +4,11 @@ class UsersController < ApplicationController
   # POST /users/1/login
   def login
     self.current_user = User.find(params[:id])
-    redirect_to User
+    redirect_to Message
   end
 
+  # здесь только для тестовых целей
+  # DELETE /users/logout
   def logout
     self.current_user = nil
     redirect_to User
