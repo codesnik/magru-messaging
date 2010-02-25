@@ -15,7 +15,7 @@
   <h3><%= message.subject %></h3>
 
   <p>
-    <%= message.body %>
+    <%= raw(auto_link(textilize(simple_format(message.body)))) %>
   </p>
 
   <% if allowed_to_change?(message) %>

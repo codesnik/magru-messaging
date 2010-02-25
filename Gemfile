@@ -6,6 +6,8 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem 'will_paginate', '3.0.pre'
 
+gem 'RedCloth'
+
 # Use mongrel as the web server
 # gem 'mongrel'
 
