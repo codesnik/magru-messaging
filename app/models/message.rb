@@ -13,6 +13,10 @@ class Message < ActiveRecord::Base
   scope :written_by, lambda { |user| where(:sender_id => user.id) }
   scope :received_by, lambda { |user| where(:sender_id => user.id) }
 
+  # что-то одно должно присутствовать
+  validates_presence_of :body, :if => proc {|msg| msg.subject.blank? }
+  validates_presence_of :sender, :recipient
+
   def thread_starter?
     !parent_id
   end
