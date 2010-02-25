@@ -12,6 +12,8 @@ class Message < ActiveRecord::Base
   }
   scope :written_by, lambda { |user| where(:sender_id => user.id) }
   scope :received_by, lambda { |user| where(:recipient_id => user.id) }
+  # вероятно, медленно, но нет большого смысла оптимизировать заранее
+  scope :grouped_by_thread, group("coalesce(parent_id, id)")
 
   # что-то одно должно присутствовать
   validates_presence_of :body, :if => proc {|msg| msg.subject.blank? }

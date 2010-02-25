@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.threads.with_user(current_user)
+    @messages = Message.grouped_by_thread.with_user(current_user)
 
     respond_with @messages
   end
