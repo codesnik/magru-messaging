@@ -1,33 +1,26 @@
-<p>
-  <b>Parent:</b>
-  <%= @message.parent %>
-</p>
+<h1><%= @message.thread_subject %></h1>
 
-<p>
-  <b>Sender:</b>
-  <%= @message.sender %>
-</p>
+<% for message in @message.full_thread %>
 
-<p>
-  <b>Recipient:</b>
-  <%= @message.recipient %>
-</p>
+  <p>
+    <%= message_from_to message %>,
+    <%= message_unread_mark message %>
+    <%= message_timestamp message %>
+  </p>
 
-<p>
-  <b>Subject:</b>
-  <%= @message.subject %>
-</p>
+  <p>
+    <b>Subject:</b>
+    <%= message.subject %>
+  </p>
 
-<p>
-  <b>Body:</b>
-  <%= @message.body %>
-</p>
+  <p>
+    <b>Body:</b>
+    <%= message.body %>
+  </p>
 
-<p>
-  <b>Unread:</b>
-  <%= @message.unread %>
-</p>
+  <hr>
 
+<% end %>
 
 <%= link_to 'Edit', edit_message_path(@message) %> |
 <%= link_to 'Back', messages_path %>

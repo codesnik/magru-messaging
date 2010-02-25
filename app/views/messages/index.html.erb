@@ -2,12 +2,11 @@
 
 <table>
   <tr>
-    <th>Parent</th>
-    <th>Sender</th>
-    <th>Recipient</th>
+    <th>Unread</th>
+    <th>Sender and Recipient</th>
     <th>Subject</th>
     <th>Body</th>
-    <th>Unread</th>
+    <th>When</th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,15 +14,16 @@
 
 <% @messages.each do |message| %>
   <tr>
-    <td><%= message.parent %></td>
-    <td><%= message.sender %></td>
-    <td><%= message.recipient %></td>
-    <td><%= message.subject %></td>
+    <td><%= message_unread_mark message %></td>
+    <td><%= message_from_to message %></td>
+    <td><%= message.thread_subject %></td>
     <td><%= message.body %></td>
-    <td><%= message.unread %></td>
+    <td><%= message_timestamp message %></td>
     <td><%= link_to 'Show', message %></td>
+    <% if allowed_to_change?(message) %>
     <td><%= link_to 'Edit', edit_message_path(message) %></td>
     <td><%= link_to 'Destroy', message, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

@@ -1,18 +1,13 @@
 <% form_for(@message) do |f| %>
   <%= f.error_messages %>
 
-  <div class="field">
-    <%= f.label :parent %><br />
-    <%= f.text_field :parent %>
-  </div>
-  <div class="field">
-    <%= f.label :sender %><br />
-    <%= f.text_field :sender %>
-  </div>
-  <div class="field">
-    <%= f.label :recipient %><br />
-    <%= f.text_field :recipient %>
-  </div>
+  <% if @message.thread_starter? %>
+    <div class="field">
+      <%= f.label :recipient %><br />
+      <%= f.select :recipient_id, message_recipient_options(@message), :include_blank => '...' %>
+    </div>
+  <% end %>
+
   <div class="field">
     <%= f.label :subject %><br />
     <%= f.text_field :subject %>
@@ -21,10 +16,7 @@
     <%= f.label :body %><br />
     <%= f.text_area :body %>
   </div>
-  <div class="field">
-    <%= f.label :unread %><br />
-    <%= f.check_box :unread %>
-  </div>
+  <%= f.hidden_field :parent_id %>
   <div class="actions">
     <%= f.submit %>
   </div>
