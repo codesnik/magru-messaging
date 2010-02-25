@@ -20,4 +20,12 @@ module MessagesHelper
   def message_timestamp message
     time_ago_in_words message.created_at
   end
+
+  def thread_excerpt message
+    content_tag :div, :class => "excerpt" do
+      concat content_tag(:strong, link_to(message.thread_subject, message))
+      concat raw(" &mdash; ")
+      concat link_to(message.body, message)
+    end
+  end
 end
