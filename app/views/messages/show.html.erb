@@ -1,9 +1,9 @@
-<h1><%= @message.thread_subject %></h1>
+<!-- <h1><%= @thread.subject %></h1> -->
 
 <%= link_to 'Back', messages_path %>
-<%= link_to 'Reply', reply_message_path(@message) %>
+<%= link_to 'Reply', reply_message_path(@thread) %>
 
-<% for message in @message.thread_messages %>
+<% for message in @messages %>
 
   <hr>
   <p>
@@ -24,3 +24,4 @@
   <% end %>
 
 <% end %>
+<%= will_paginate @messages %>

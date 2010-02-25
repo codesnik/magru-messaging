@@ -1,5 +1,7 @@
 <h1>Listing messages</h1>
 
+<%= link_to 'New message', new_message_path %>
+
 <table>
 
 <% @messages.each do |message| %>
@@ -12,6 +14,4 @@
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New message', new_message_path %>
+<%= will_paginate @messages %>

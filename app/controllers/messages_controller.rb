@@ -1,30 +1,39 @@
 class MessagesController < ApplicationController
 
+  MESSAGES_PER_PAGE = 5
+  THREADS_PER_PAGE = 5
+
   respond_to :html, :json
 
   before_filter :require_auth
 
+  # не работает в текущей версии гема.
+  #self.per_page = 5
+
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.grouped_by_thread.with_user(current_user)
+    @messages = Message.grouped_by_thread.with_user(current_user) \
+      .paginate(:page => params[:page], :per_page => THREADS_PER_PAGE)
 
     respond_with @messages
   end
 
   # GET /messages/1
-  # GET /messages/1.json
+  # GET /messages/1.json -> выдаст весь тред. возможно надо менять
   def show
-    @message = Message.find(params[:id])
-
-    unless allowed_to_view?(@message)
+    @thread = Message.find(params[:id]).thread
+    unless allowed_to_view?(@thread)
       forbid_action
       return
     end
 
-    @message.read!(current_user)
+    @messages = @thread.thread_messages \
+      .paginate(:page => params[:page], :per_page => MESSAGES_PER_PAGE)
 
-    respond_with @message
+    @thread.read!(current_user)
+
+    respond_with @messages
   end
 
   # GET /messages/new

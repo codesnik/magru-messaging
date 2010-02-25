@@ -4,6 +4,8 @@ gem 'rails', :git => 'git://github.com/rails/rails'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
 
+gem 'will_paginate', '3.0.pre'
+
 # Use mongrel as the web server
 # gem 'mongrel'
 
@@ -18,6 +20,10 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 # Bundle gems for certain environments:
 # gem 'rspec', :group => :test
-# group :test do
-#   gem 'webrat'
-# end
+
+group :console do
+   gem 'looksee'
+   gem 'wirble'
+   gem 'hirb'
+   gem 'ruby-debug'
+end
