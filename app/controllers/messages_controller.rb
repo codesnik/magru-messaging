@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
+    @messages = Message.threads.with_user(current_user)
 
     respond_with @messages
   end
@@ -28,7 +28,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   # GET /messages/new.json
   def new
-    @message = Message.new
+    @message = Message.written_by(current_user).new
 
     respond_with @message
   end
@@ -46,7 +46,7 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @message = Message.new(params[:message])
+    @message = Message.written_by(current_user).new(params[:message])
 
     respond_to do |format|
       if @message.save

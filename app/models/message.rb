@@ -10,6 +10,8 @@ class Message < ActiveRecord::Base
   scope :with_user, lambda { |user|
     where(["recipient_id = ? or sender_id = ?", user.id, user.id])
   }
+  scope :written_by, lambda { |user| where(:sender_id => user.id) }
+  scope :received_by, lambda { |user| where(:sender_id => user.id) }
 
   def thread_starter?
     !parent_id
