@@ -46,6 +46,12 @@ a {
   border: solid 1px #C66;
 }
 
+.excerpt {
+  width: 400px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .fieldWithErrors {
   display: inline;
 }
