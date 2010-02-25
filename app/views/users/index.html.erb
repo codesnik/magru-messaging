@@ -1,23 +1,20 @@
-<h1>Listing users</h1>
+<h1>Список пользователей</h1>
 
 <table>
   <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Имя</th>
   </tr>
 
 <% @users.each do |user| %>
   <tr>
+    <td><%= link_to 'Войти как', login_user_path(user), :method => :post %></td>
     <td><%= user.name %></td>
-    <td><%= link_to 'Login', login_user_path(user), :method => :post %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Переименовать', edit_user_path(user) %></td>
+    <td><%#= link_to 'Удалить', user, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New user', new_user_path %>
+<%= link_to 'Новый пользователь', new_user_path %>

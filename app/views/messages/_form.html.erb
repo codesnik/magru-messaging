@@ -4,7 +4,7 @@
   <div class="field">
   <% if @message.thread_starter? %>
       <%= f.label :recipient %><br />
-      <%= f.select :recipient_id, message_recipient_options(@message), :include_blank => '...' %>
+      <%= f.select :recipient_id, message_recipient_options(@message), :include_blank => '-- выберите --' %>
   <% else %>
       <%= f.label :recipient %> <%= @message.recipient.name %>
       <%= f.hidden_field :recipient_id %>

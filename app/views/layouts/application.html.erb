@@ -10,13 +10,13 @@
 <body>
 
 <div id="container">
-<%= link_to_unless_current 'Users', users_path %>
-<%= link_to_unless_current 'Messages', messages_path %>
+<%= link_to_unless_current 'Пользователи', users_path %>
+<%= link_to_unless_current 'Сообщения', messages_path %>
 
 <div id="auth">
 <% if current_user %>
   logged in as <%= current_user.name %>.
-  <%= link_to 'logout', logout_users_path, :method => :delete %>
+  <%= link_to 'выйти', logout_users_path, :method => :delete %>
 <% end %>
 </div>
 

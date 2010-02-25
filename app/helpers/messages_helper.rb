@@ -21,7 +21,8 @@ module MessagesHelper
   end
 
   def message_timestamp message
-    time_ago_in_words message.created_at
+    content_tag :span, (time_ago_in_words(message.created_at) + ' назад'),
+      :title => l(message.created_at)
   end
 
   def thread_excerpt message
