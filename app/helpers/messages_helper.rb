@@ -7,13 +7,16 @@ module MessagesHelper
     h(message.sender.try(:name)) + ' &rArr; '.html_safe + h(message.recipient.try(:name))
   end
 
-  def message_unread? message
-    (current_user != message.sender) && message.unread?
+  def message_unread_mark message
+    if message.unread_by?(current_user)
+      content_tag :strong, 'NEW'
+    end
   end
 
-  def message_unread_mark message
-    if message_unread?(message)
-      '(NEW!!)'
+  def thread_unread_counter message
+    count = message.unread_count(current_user)
+    if count > 0
+      content_tag :strong, "#{count} NEW"
     end
   end
 

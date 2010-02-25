@@ -4,7 +4,7 @@
 
 <% @messages.each do |message| %>
   <tr>
-    <td><%= message_unread_mark message %></td>
+    <td><%= thread_unread_counter message %></td>
     <td><%= message_from_to message %></td>
     <td><%= thread_excerpt message %></td>
     <td><%= message_timestamp message %></td>

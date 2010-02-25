@@ -3,11 +3,12 @@
 <%= link_to 'Back', messages_path %>
 <%= link_to 'Reply', reply_message_path(@message) %>
 
-<% for message in @message.full_thread %>
+<% for message in @message.thread_messages %>
 
+  <hr>
   <p>
-    <%= message_from_to message %>,
     <%= message_unread_mark message %>
+    <%= message_from_to message %>
     <%= message_timestamp message %>
   </p>
 
@@ -21,6 +22,5 @@
     <%= link_to 'Edit', edit_message_path(message) %> |
     <%= link_to 'Destroy', message_path(message), :method => :delete, :confirm => "Are you sure?" %>
   <% end %>
-  <hr>
 
 <% end %>

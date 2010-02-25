@@ -22,6 +22,8 @@ class MessagesController < ApplicationController
       return
     end
 
+    @message.read!(current_user)
+
     respond_with @message
   end
 
@@ -77,6 +79,8 @@ class MessagesController < ApplicationController
   def update
     @message = Message.find(params[:id])
 
+    # TODO сделать отдельное сообщение на случай
+    # если сообщение прочитали после начала редактирования
     unless allowed_to_change?(@message)
       forbid_action
       return
