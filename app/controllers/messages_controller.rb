@@ -74,7 +74,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to(@message, :notice => 'Message was successfully created.') }
+        format.html { redirect_to(@message, :notice => 'сообщение отправлено') }
         format.json { render :json => @message, :status => :created, :location => @message }
       else
         format.html { render :action => "new" }
@@ -97,7 +97,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.update_attributes(params[:message])
-        format.html { redirect_to(@message, :notice => 'Message was successfully updated.') }
+        format.html { redirect_to(@message, :notice => 'сообщение изменено') }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -119,7 +119,7 @@ class MessagesController < ApplicationController
     @message.destroy
 
     respond_to do |format|
-      format.html { redirect_to(messages_url) }
+      format.html { redirect_to(messages_url, :notice => 'сообщение удалено') }
       format.json { head :ok }
     end
   end

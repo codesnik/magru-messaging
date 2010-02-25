@@ -19,12 +19,12 @@ class ApplicationController < ActionController::Base
   # filters
   def require_auth
     unless current_user
-      redirect_to users_path, :alert => 'Auth required.'
+      redirect_to users_path, :alert => 'требуется аутентификация'
     end
   end
 
   def forbid_action
-    redirect_to :back, :alert => "Action forbidden"
+    redirect_to :back, :alert => "действие запрещено"
   end
 
 end

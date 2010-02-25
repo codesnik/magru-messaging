@@ -1,0 +1,22 @@
+ru:
+  errors:
+    template:
+      header: "{{model}}: ошибки при сохранении ({{count}})"
+      body: "поправьте, пожалуйста"
+  helpers:
+    submit:
+      create: 'Создать'
+      update: 'Изменить'
+      submit: 'Сохранить'
+  activerecord:
+    models:
+      user: Пользователь
+      message: Сообщение
+    attributes:
+      user:
+        name: Имя
+      message:
+        subject: Тема
+        body: Сообщение
+        recipient: Получатель
+        sender: Отправитель

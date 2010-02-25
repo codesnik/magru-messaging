@@ -15,10 +15,12 @@
 
 <div id="auth">
 <% if current_user %>
-  logged in as <%= current_user.name %>.
+  привет, <%= current_user.name %>!
   <%= link_to 'выйти', logout_users_path, :method => :delete %>
 <% end %>
 </div>
+
+<hr>
 
 <div id="flash">
   <% if notice.present? %> <p class="notice"><%= notice %></p> <% end %>

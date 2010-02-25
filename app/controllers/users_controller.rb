@@ -4,14 +4,14 @@ class UsersController < ApplicationController
   # POST /users/1/login
   def login
     self.current_user = User.find(params[:id])
-    redirect_to Message
+    redirect_to Message, :notice => 'аутентификация прошла успешно'
   end
 
   # здесь только для тестовых целей
   # DELETE /users/logout
   def logout
     self.current_user = nil
-    redirect_to User
+    redirect_to User, :notice => 'пока!'
   end
 
   # GET /users
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
+        format.html { redirect_to(@user, :notice => 'пользователь успешно создан') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
+        format.html { redirect_to(@user, :notice => 'пользователь успешно обновлен') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
