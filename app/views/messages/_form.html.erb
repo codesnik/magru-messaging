@@ -1,12 +1,15 @@
 <% form_for(@message) do |f| %>
   <%= f.error_messages %>
 
+  <div class="field">
   <% if @message.thread_starter? %>
-    <div class="field">
       <%= f.label :recipient %><br />
       <%= f.select :recipient_id, message_recipient_options(@message), :include_blank => '...' %>
-    </div>
+  <% else %>
+      <%= f.label :recipient %> <%= @message.recipient.name %>
+      <%= f.hidden_field :recipient_id %>
   <% end %>
+  </div>
 
   <div class="field">
     <%= f.label :subject %><br />

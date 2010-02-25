@@ -33,6 +33,19 @@ class MessagesController < ApplicationController
     respond_with @message
   end
 
+  # GET /messages/1/reply
+  def reply
+    @thread = Message.find(params[:id]).thread
+
+    unless allowed_to_view?(@thread)
+      forbid_action
+      return
+    end
+
+    @message = @thread.new_reply(current_user)
+    render :new
+  end
+
   # GET /messages/1/edit
   def edit
     @message = Message.find(params[:id])

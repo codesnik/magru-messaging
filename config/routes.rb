@@ -1,7 +1,4 @@
 MagruMessagingScaffold::Application.routes.draw do |map|
-  resources :messages
-
-
   root :to => "users#index"
 
   resources :users do
@@ -11,6 +8,12 @@ MagruMessagingScaffold::Application.routes.draw do |map|
 
     collection do
       delete :logout
+    end
+  end
+
+  resources :messages do
+    member do
+      get :reply
     end
   end
 

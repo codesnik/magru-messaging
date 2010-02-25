@@ -25,6 +25,13 @@ class Message < ActiveRecord::Base
     thread.messages + [thread]
   end
 
+  def new_reply(author)
+    msg = thread.messages.build :sender => author
+    # можно писать в свой же тред
+    msg.recipient = (thread.sender == author) ? thread.recipient : thread.sender
+    msg
+  end
+
   delegate :subject, :to => :thread, :prefix => :thread
 
 end
