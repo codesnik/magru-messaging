@@ -8,19 +8,18 @@
     <%= message_timestamp message %>
   </p>
 
-  <p>
-    <b>Subject:</b>
-    <%= message.subject %>
-  </p>
+  <h3><%= message.subject %></h3>
 
   <p>
-    <b>Body:</b>
     <%= message.body %>
   </p>
 
+  <% if allowed_to_change?(message) %>
+    <%= link_to 'Edit', edit_message_path(message) %> |
+    <%= link_to 'Destroy', message_path(message), :method => :delete, :confirm => "Are you sure?" %>
+  <% end %>
   <hr>
 
 <% end %>
 
-<%= link_to 'Edit', edit_message_path(@message) %> |
 <%= link_to 'Back', messages_path %>
