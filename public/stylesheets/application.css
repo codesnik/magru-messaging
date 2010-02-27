@@ -89,3 +89,8 @@ a {
   font-size: 12px;
   list-style: disc;
 }
+
+
+.has_new_messages {
+  background: #ddf
+}

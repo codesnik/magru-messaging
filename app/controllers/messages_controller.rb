@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.grouped_by_thread.with_user(current_user) \
+    @threads = Message.threads.with_user(current_user) \
       .paginate(:page => params[:page], :per_page => THREADS_PER_PAGE)
 
     respond_with @messages

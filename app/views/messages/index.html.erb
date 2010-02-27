@@ -4,14 +4,17 @@
 
 <table>
 
-<% @messages.each do |message| %>
-  <tr>
-    <td><%= thread_unread_counter message %></td>
-    <td><%= message_from_to message %></td>
-    <td><%= thread_excerpt message %></td>
-    <td><%= message_timestamp message %></td>
+<% @threads.each do |thread| %>
+  <% if thread.thread_unread_by?(current_user) %>
+    <tr class="has_new_messages">
+  <% else %>
+    <tr>
+  <% end %>
+    <td><%= message_from_to thread %> <%= thread_unread_counter thread %></td>
+    <td><%= thread_excerpt thread %></td>
+    <td><%= message_timestamp thread %></td>
   </tr>
 <% end %>
 </table>
 
-<%= will_paginate @messages %>
+<%= will_paginate @threads %>

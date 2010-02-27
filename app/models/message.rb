@@ -19,22 +19,20 @@ class Message < ActiveRecord::Base
   validates_presence_of :body, :if => proc {|msg| msg.subject.blank? }
   validates_presence_of :sender, :recipient
 
-  def thread_starter?
-    !parent_id
-  end
+  def thread_starter?; !parent_id end
+  def reply?; !thread_starter? end
 
-  def thread
-    parent || self
-  end
-
-  def thread_id
-    parent_id || id
-  end
+  def thread; parent || self end
+  def thread_id; parent_id || id end
 
   # TODO try to get this via association
   def thread_messages
     #thread.messages + [thread]
     Message.where(["id = ? or parent_id = ?", thread_id, thread_id])
+  end
+
+  def thread_messages_count
+    thread.messages.count + 1
   end
 
   def new_reply(author)
@@ -50,8 +48,12 @@ class Message < ActiveRecord::Base
     unread? && reader != sender
   end
 
-  def unread_count(reader)
+  def unread_count_for(reader)
     thread_messages.received_by(reader).unread.count
+  end
+
+  def thread_unread_by?(reader)
+    unread_count_for(reader) != 0
   end
 
   def read!(reader)

@@ -1,10 +1,11 @@
 module MessagesHelper
+  MAX_EXCERPT_CHARS = 30
   def message_recipient_options message
     options_from_collection_for_select( User.all - [current_user], :id, :name, message.recipient_id)
   end
 
   def message_from_to message
-    h(message.sender.try(:name)) + ' &rArr; '.html_safe + h(message.recipient.try(:name))
+    h(message.sender.name) + raw(' &rArr; ') + h(message.recipient.name)
   end
 
   def message_unread_mark message
@@ -13,23 +14,32 @@ module MessagesHelper
     end
   end
 
-  def thread_unread_counter message
-    count = message.unread_count(current_user)
-    if count > 0
-      content_tag :strong, "#{count} NEW"
-    end
+  def thread_unread_counter thread
+    total = thread.thread_messages_count
+    unread = thread.unread_count_for(current_user)
+
+    case [total, unread]
+    when [total, 0]
+      "(#{total})"
+    when [total, total]
+      "(<strong>#{unread}</strong>)"
+    else
+      "(<strong>#{unread}</strong>/#{total})"
+    end.html_safe
   end
 
   def message_timestamp message
-    content_tag :span, (time_ago_in_words(message.created_at) + ' назад'),
-      :title => l(message.created_at)
+    content_tag :span, l(message.created_at, :format => :short),
+      :title => (time_ago_in_words(message.created_at) + ' назад')
   end
 
   def thread_excerpt message
+    thread = message.thread
+    body_excerpt = truncate(message.body, MAX_EXCERPT_CHARS)
     content_tag :div, :class => "excerpt" do
-      concat content_tag(:strong, link_to(message.thread_subject, message))
+      concat content_tag(:strong, link_to(thread.thread_subject, thread))
       concat raw(" &mdash; ")
-      concat link_to(message.body, message)
+      concat link_to(body_excerpt, thread)
     end
   end
 end
