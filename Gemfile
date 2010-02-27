@@ -23,9 +23,13 @@ gem 'RedCloth'
 # Bundle gems for certain environments:
 # gem 'rspec', :group => :test
 
-group :console do
-   gem 'looksee'
-   gem 'wirble'
-   gem 'hirb'
-   gem 'ruby-debug'
+group :test do
+  gem 'mocha'
 end
+
+# group :console do
+#    gem 'looksee'
+#    gem 'wirble'
+#    gem 'hirb'
+#    gem 'ruby-debug'
+# end
