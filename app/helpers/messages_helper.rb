@@ -23,6 +23,8 @@ module MessagesHelper
     unread = thread.unread_count_for(current_user)
 
     case [total, unread]
+    when [1, 0]
+      ""
     when [total, 0]
       "(#{total})"
     when [total, total]
@@ -42,7 +44,10 @@ module MessagesHelper
   end
 
   def thread_excerpt thread
-    body_excerpt = truncate(thread.first_unread_or_last_read_for(current_user).body, MAX_EXCERPT_CHARS)
+    body_excerpt = truncate(
+      thread.first_unread_or_last_read_for(current_user).body,
+      :length => MAX_EXCERPT_CHARS)
+
     content_tag :div, :class => "excerpt" do
       concat content_tag(:strong, link_to(thread.thread_subject, thread))
       concat raw(" &mdash; ")
