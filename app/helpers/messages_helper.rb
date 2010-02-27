@@ -45,7 +45,7 @@ module MessagesHelper
 
   def thread_excerpt thread
     body_excerpt = truncate(
-      thread.first_unread_or_last_read_for(current_user).body,
+      thread.first_unread_or_last_read_for(current_user).body.squish,
       :length => MAX_EXCERPT_CHARS)
 
     content_tag :div, :class => "excerpt" do
