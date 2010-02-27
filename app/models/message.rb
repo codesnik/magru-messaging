@@ -12,8 +12,7 @@ class Message < ActiveRecord::Base
   }
   scope :written_by, lambda { |user| where(:sender_id => user.id) }
   scope :received_by, lambda { |user| where(:recipient_id => user.id) }
-  # вероятно, медленно, но нет большого смысла оптимизировать заранее
-  scope :grouped_by_thread, group("coalesce(parent_id, id)")
+  scope :ordered_by_activity, order('updated_at desc')
 
   # что-то одно должно присутствовать
   validates_presence_of :body, :if => proc {|msg| msg.subject.blank? }
@@ -56,8 +55,18 @@ class Message < ActiveRecord::Base
     unread_count_for(reader) != 0
   end
 
+  def first_unread_or_last_read_for(reader)
+    # last и first имеют противоположный смысл из-за default_scope
+    # TODO избавиться от него?
+    thread_messages.received_by(reader).unread.last || thread_messages.first
+  end
+
   def read!(reader)
     thread_messages.received_by(reader).unread.update_all :unread => false
+  end
+
+  before_save do |message|
+    message.thread.touch if message.reply?
   end
 
 end

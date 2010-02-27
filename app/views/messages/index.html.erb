@@ -10,9 +10,9 @@
   <% else %>
     <tr>
   <% end %>
-    <td><%= message_from_to thread %> <%= thread_unread_counter thread %></td>
+    <td><%= thread_from_to thread %> <%= thread_unread_counter thread %></td>
     <td><%= thread_excerpt thread %></td>
-    <td><%= message_timestamp thread %></td>
+    <td><%= thread_timestamp thread %></td>
   </tr>
 <% end %>
 </table>
