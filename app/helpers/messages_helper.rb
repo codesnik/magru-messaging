@@ -1,5 +1,7 @@
 module MessagesHelper
+
   MAX_EXCERPT_CHARS = 30
+
   def message_recipient_options message
     options_from_collection_for_select( User.all - [current_user], :id, :name, message.recipient_id)
   end
@@ -8,8 +10,8 @@ module MessagesHelper
     h(message.sender.name) + raw(' &rArr; ') + h(message.recipient.name)
   end
 
-  def thread_from_to message
-    message_from_to( message.first_unread_or_last_read_for(current_user) )
+  def thread_from_to thread
+    message_from_to( thread.first_unread_or_last_read_for(current_user) )
   end
 
   def message_unread_mark message
