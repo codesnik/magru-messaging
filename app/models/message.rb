@@ -2,7 +2,7 @@ class Message < ActiveRecord::Base
   belongs_to :parent, :class_name => "Message"
   belongs_to :sender, :class_name => "User"
   belongs_to :recipient, :class_name => "User"
-  has_many :messages, :foreign_key => :parent_id
+  has_many :messages, :foreign_key => :parent_id, :dependent => :delete_all
 
   default_scope order('created_at desc')
   scope :threads, where(:parent_id => nil)
