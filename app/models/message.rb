@@ -1,5 +1,6 @@
 class Message < ActiveRecord::Base
-  belongs_to :parent, :class_name => "Message"
+  # обновляет updated_at у родительского сообщения, нужно для сортировки
+  belongs_to :parent, :class_name => "Message", :touch => true
   belongs_to :sender, :class_name => "User"
   belongs_to :recipient, :class_name => "User"
   has_many :messages, :foreign_key => :parent_id, :dependent => :delete_all
@@ -64,10 +65,6 @@ class Message < ActiveRecord::Base
 
   def read!(reader)
     thread_messages.unread_by(reader).update_all :unread => false
-  end
-
-  before_save do |message|
-    message.thread.touch if message.reply?
   end
 
 end
