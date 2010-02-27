@@ -1,4 +1,4 @@
-<!-- <h1><%= @thread.subject %></h1> -->
+<h1><%= @thread.subject %></h1>
 
 <%= link_to 'Назад', messages_path %>
 <%= link_to 'Ответить', reply_message_path(@thread) %>
@@ -10,8 +10,6 @@
     <%= message_unread_mark message %>
     <%= message_from_to message %>, написано <%= message_timestamp message %>
   </p>
-
-  <h3><%= message.subject %></h3>
 
   <p>
     <%= raw(auto_link(textilize(simple_format(message.body)))) %>
