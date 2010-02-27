@@ -12,6 +12,7 @@ class Message < ActiveRecord::Base
   }
   scope :written_by, lambda { |user| where(:sender_id => user.id) }
   scope :received_by, lambda { |user| where(:recipient_id => user.id) }
+  scope :unread_by, lambda { |user| unread.received_by(user) }
   scope :ordered_by_activity, order('updated_at desc')
 
   # что-то одно должно присутствовать
@@ -48,7 +49,7 @@ class Message < ActiveRecord::Base
   end
 
   def unread_count_for(reader)
-    thread_messages.received_by(reader).unread.count
+    thread_messages.unread_by(reader).count
   end
 
   def thread_unread_by?(reader)
@@ -58,11 +59,11 @@ class Message < ActiveRecord::Base
   def first_unread_or_last_read_for(reader)
     # last и first имеют противоположный смысл из-за default_scope
     # TODO избавиться от него?
-    thread_messages.received_by(reader).unread.last || thread_messages.first
+    thread_messages.unread_by(reader).last || thread_messages.first
   end
 
   def read!(reader)
-    thread_messages.received_by(reader).unread.update_all :unread => false
+    thread_messages.unread_by(reader).update_all :unread => false
   end
 
   before_save do |message|
