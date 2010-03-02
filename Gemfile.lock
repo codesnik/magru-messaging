@@ -10,7 +10,7 @@ dependencies:
     version: ">= 0"
     require: 
     - sqlite3
-  mocha: 
+  factory_girl: 
     group: 
     - :test
     version: ">= 0"
@@ -18,6 +18,10 @@ dependencies:
     group: 
     - :default
     version: = 3.0.pre
+  mocha: 
+    group: 
+    - :test
+    version: ">= 0"
   RedCloth: 
     group: 
     - :default
@@ -33,10 +37,12 @@ specs:
     version: 0.3.5
 - bundler: 
     version: 0.9.9
-- will_paginate: 
-    version: 3.0.pre
 - arel: 
     version: 0.2.1
+- will_paginate: 
+    version: 3.0.pre
+- factory_girl: 
+    version: 1.2.3
 - activemodel: 
     version: 3.0.0.beta1
     source: 0
@@ -50,13 +56,6 @@ specs:
     version: 2.6.5
 - thor: 
     version: 0.13.4
-- rake: 
-    version: 0.8.7
-- mocha: 
-    version: 0.9.8
-- railties: 
-    version: 3.0.0.beta1
-    source: 0
 - sqlite3-ruby: 
     version: 1.2.5
 - memcache-client: 
@@ -68,6 +67,13 @@ specs:
 - rack-mount: 
     version: 0.5.2
 - actionpack: 
+    version: 3.0.0.beta1
+    source: 0
+- rake: 
+    version: 0.8.7
+- mocha: 
+    version: 0.9.8
+- railties: 
     version: 3.0.0.beta1
     source: 0
 - text-format: 
@@ -89,11 +95,11 @@ specs:
 - activesupport: 
     version: 3.0.0.beta1
     source: 0
-hash: c2b2c9d2cdcb452813cb1f5f7f773c5622f2aa21
+hash: e33a93609acaf17202af726c69811f5fa0b98020
 sources: 
 - Git: 
     uri: git://github.com/rails/rails
     git: git://github.com/rails/rails
-    ref: 4bdc783d37b82b739c5ddcc828d3a253873f6629
+    ref: 020fdb28ee1d1bdb2dd1aa182869eb2e7c6115cb
 - Rubygems: 
     uri: http://gemcutter.org

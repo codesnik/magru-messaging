@@ -25,6 +25,7 @@ gem 'RedCloth'
 
 group :test do
   gem 'mocha'
+  gem 'factory_girl'
 end
 
 # group :console do
