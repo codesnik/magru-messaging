@@ -3,6 +3,7 @@ class Message < ActiveRecord::Base
   belongs_to :parent, :class_name => "Message", :touch => true
   belongs_to :sender, :class_name => "User"
   belongs_to :recipient, :class_name => "User"
+  belongs_to :deleter, :class_name => "User"
   has_many :messages, :foreign_key => :parent_id, :dependent => :delete_all
 
   default_scope order('created_at desc')
@@ -11,6 +12,9 @@ class Message < ActiveRecord::Base
   scope :with_user, lambda { |user|
     where(["recipient_id = ? or sender_id = ?", user.id, user.id])
   }
+  # for threads only:
+  scope :not_deleted_by, lambda { |user| where("deleter_id is NULL or deleter_id != ?", user.id) }
+  scope :threads_visible_by_user, lambda { |user| threads.with_user(user).not_deleted_by(user) }
   scope :written_by, lambda { |user| where(:sender_id => user.id) }
   scope :received_by, lambda { |user| where(:recipient_id => user.id) }
   scope :unread_by, lambda { |user| unread.received_by(user) }
@@ -65,6 +69,22 @@ class Message < ActiveRecord::Base
 
   def read!(reader)
     thread_messages.unread_by(reader).update_all :unread => false
+  end
+
+  def thread_deleted_by?(user)
+    thread.deleter == user
+  end
+
+  # прячет цепочку
+  # !!! проверка прав - на совести контроллера!
+  def delete_thread_by(user)
+    unless thread.deleter
+      thread.deleter = user
+      thread.save
+    else
+      # включая все дочерние
+      thread.destroy
+    end
   end
 
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100224211355) do
+ActiveRecord::Schema.define(:version => 20100302160731) do
 
   create_table "messages", :force => true do |t|
     t.integer  "parent_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20100224211355) do
     t.boolean  "unread",       :default => true, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "deleter_id"
   end
 
   create_table "users", :force => true do |t|
