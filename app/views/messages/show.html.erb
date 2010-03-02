@@ -1,7 +1,13 @@
 <h1><%= @thread.subject %></h1>
 
 <%= link_to 'Назад', messages_path %>
-<%= link_to 'Ответить', reply_message_path(@thread) %>
+<% if @thread.deleter.present? %>
+  пользователь <%= @thread.deleter.name %> покинул переписку.
+<% else %>
+  <%= link_to 'Ответить', reply_message_path(@thread) %>
+<% end %>
+<%= link_to 'Удалить ветку из ящика', delete_thread_message_path(@thread), :method => :delete %>
+
 
 <% for message in @messages %>
 

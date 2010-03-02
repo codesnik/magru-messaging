@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @threads = Message.threads.with_user(current_user).ordered_by_activity \
+    @threads = Message.threads_visible_by_user(current_user).ordered_by_activity \
       .paginate(:page => params[:page], :per_page => THREADS_PER_PAGE)
 
     respond_with @messages
@@ -110,16 +110,36 @@ class MessagesController < ApplicationController
     end
   end
 
+  # DELETE /messages/1/delete_thread
+  # DELETE /messages/1.json
+  def delete_thread
+    @thread = Message.find(params[:id]).thread
+
+    forbid! unless allowed_to_delete_thread?(@thread)
+
+    @thread.delete_thread_by(current_user)
+
+    respond_to do |format|
+      format.html { redirect_to(messages_url, :notice => 'ветка удалена') }
+      format.json { head :ok }
+    end
+  end
+
   protected
 
   def allowed_to_view?(message)
-    [message.recipient, message.sender].include?(current_user)
+    [message.recipient, message.sender].include?(current_user) &&
+      !message.thread_deleted_by?(current_user)
+  end
+
+  def allowed_to_delete_thread?(message)
+    allowed_to_view?(message)
   end
 
   def allowed_to_change?(message)
     current_user == message.sender && message.unread?
   end
-  helper_method :allowed_to_view?, :allowed_to_change?
+  helper_method :allowed_to_view?, :allowed_to_change?, :allowed_to_delete_thread?
 
   module Messaging
     class NotAllowed < StandardError

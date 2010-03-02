@@ -14,6 +14,7 @@ MagruMessaging::Application.routes.draw do |map|
   resources :messages do
     member do
       get :reply
+      delete :delete_thread
     end
   end
 
