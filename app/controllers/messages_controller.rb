@@ -7,27 +7,25 @@ class MessagesController < ApplicationController
 
   before_filter :require_auth
 
-  # не работает в текущей версии гема.
-  #self.per_page = 5
-
   # GET /messages
   # GET /messages.json
   def index
-    @threads = Message.threads.with_user(current_user).ordered_by_activity \
-      .paginate(:page => params[:page], :per_page => THREADS_PER_PAGE)
+    @threads = Message.ordered_by_activity.threads.with_user(current_user)
+      # .paginate(:page => params[:page], :per_page => THREADS_PER_PAGE)
 
-    respond_with @messages
+    respond_with @threads
   end
 
   # GET /messages/1
   # GET /messages/1.json -> выдаст весь тред. возможно надо менять
   def show
-    @thread = Message.find(params[:id]).thread
+    @thread = Message.get!(params[:id]).thread
 
     forbid! unless allowed_to_view?(@thread)
 
-    @messages = @thread.thread_messages \
-      .paginate(:page => params[:page], :per_page => MESSAGES_PER_PAGE)
+    # .entries нужен, чтобы выбрать записи ДО того, как пометить их как прочтенные
+    @messages = @thread.thread_messages.ordered_by_creation.entries
+      # .paginate(:page => params[:page], :per_page => MESSAGES_PER_PAGE)
 
     @thread.read!(current_user)
 
@@ -44,7 +42,7 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/reply
   def reply
-    @thread = Message.find(params[:id]).thread
+    @thread = Message.get!(params[:id]).thread
 
     forbid! unless allowed_to_view?(@thread)
 
@@ -54,7 +52,7 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/edit
   def edit
-    @message = Message.find(params[:id])
+    @message = Message.get!(params[:id])
 
     forbid! unless allowed_to_view?(@message)
     forbid! 'изменение запрещено: сообщение уже прочитано' unless allowed_to_change?(@message)
@@ -79,13 +77,13 @@ class MessagesController < ApplicationController
   # PUT /messages/1
   # PUT /messages/1.json
   def update
-    @message = Message.find(params[:id])
+    @message = Message.get!(params[:id])
 
     forbid! unless allowed_to_view?(@message)
     forbid! 'изменение запрещено: сообщение уже прочитано' unless allowed_to_change?(@message)
 
     respond_to do |format|
-      if @message.update_attributes(params[:message])
+      if @message.update(params[:message])
         format.html { redirect_to(@message, :notice => 'сообщение изменено') }
         format.json { head :ok }
       else
@@ -98,7 +96,7 @@ class MessagesController < ApplicationController
   # DELETE /messages/1
   # DELETE /messages/1.json
   def destroy
-    @message = Message.find(params[:id])
+    @message = Message.get!(params[:id])
 
     forbid! unless allowed_to_change?(@message)
 

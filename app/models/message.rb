@@ -1,35 +1,41 @@
-class Message < ActiveRecord::Base
-  # обновляет updated_at у родительского сообщения, нужно для сортировки
-  belongs_to :parent, :class_name => "Message", :touch => true
-  belongs_to :sender, :class_name => "User"
-  belongs_to :recipient, :class_name => "User"
-  has_many :messages, :foreign_key => :parent_id, :dependent => :delete_all
+class Message
+  include DataMapper::Resource
 
-  default_scope order('created_at desc')
-  scope :threads, where(:parent_id => nil)
-  scope :unread, where(:unread => true)
-  scope :with_user, lambda { |user|
-    where(["recipient_id = ? or sender_id = ?", user.id, user.id])
-  }
-  scope :written_by, lambda { |user| where(:sender_id => user.id) }
-  scope :received_by, lambda { |user| where(:recipient_id => user.id) }
-  scope :unread_by, lambda { |user| unread.received_by(user) }
-  scope :ordered_by_activity, order('updated_at desc')
+  property :id, Serial
+  property :subject, String
+  property :body, Text, :required => true
+  property :unread, Boolean, :default => true, :required => true, :lazy => false
+  timestamps :at
 
-  # что-то одно должно присутствовать
-  validates_presence_of :body, :if => proc {|msg| msg.subject.blank? }
-  validates_presence_of :sender, :recipient
+  belongs_to :parent, "Message", :required => false
+  belongs_to :sender, "User"
+  belongs_to :recipient, "User"
+  has n, :messages, :child_key => :parent_id # :dependent => :delete_all ?
 
-  def thread_starter?; !parent_id end
+  # scopes
+  class << self
+    def ordered_by_creation; all(:order => :created_at.desc) end
+    def threads; all(:parent => nil) end
+    def unread; all(:unread => true) end
+    def with_user(user)
+      # all(:conditions => ["recipient_id = ? or sender_id = ?", user.id, user.id])
+      all(:recipient => user) + all(:sender => user)
+    end
+    def written_by(user); all(:sender => user) end
+    def received_by(user); all(:recipient => user) end
+    def unread_by(user); unread.received_by(user) end
+    def ordered_by_activity; all(:order => :updated_at.desc) end
+  end
+
+  def thread_starter?; !parent end
   def reply?; !thread_starter? end
 
   def thread; parent || self end
-  def thread_id; parent_id || id end
 
-  # TODO try to get this via association
   def thread_messages
-    #thread.messages + [thread]
-    Message.where(["id = ? or parent_id = ?", thread_id, thread_id])
+    ## TODO try to get this via association
+    #Message.all(:id => thread.id) + Message.all(:parent => thread)
+    Message.all(:conditions => ["id = ? or parent_id = ?", thread.id, thread.id])
   end
 
   def thread_messages_count
@@ -37,7 +43,7 @@ class Message < ActiveRecord::Base
   end
 
   def new_reply(author)
-    msg = thread.messages.build :sender => author
+    msg = thread.messages.new :sender => author
     # можно писать в свой же тред
     msg.recipient = (thread.sender == author) ? thread.recipient : thread.sender
     msg
@@ -58,13 +64,16 @@ class Message < ActiveRecord::Base
   end
 
   def first_unread_or_last_read_for(reader)
-    # last и first имеют противоположный смысл из-за default_scope
-    # TODO избавиться от него?
-    thread_messages.unread_by(reader).last || thread_messages.first
+    thread_messages.unread_by(reader).first(:order => :created_at.asc) ||
+      thread_messages.first(:order => :created_at.desc)
   end
 
   def read!(reader)
-    thread_messages.unread_by(reader).update_all :unread => false
+    thread_messages.unread_by(reader).update! :unread => false
   end
 
+  after :create do
+    # для сортировки в инбоксе
+    parent && parent.touch
+  end
 end

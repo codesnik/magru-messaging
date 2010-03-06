@@ -1,51 +1,96 @@
 --- 
 dependencies: 
-  rails: 
+  dm-rails: 
     group: 
     - :default
-    version: ">= 0"
-  sqlite3-ruby: 
+    version: ~> 0.10.2
+  data_objects: 
     group: 
     - :default
-    version: ">= 0"
+    version: ~> 0.10.1
+  dm-validations: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  dm-types: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  railties: 
+    group: 
+    - :default
+    version: ~> 3.0.0.beta1
     require: 
-    - sqlite3
-  factory_girl: 
-    group: 
-    - :test
-    version: ">= 0"
-  will_paginate: 
+    - rails
+  dm-observer: 
     group: 
     - :default
-    version: = 3.0.pre
-  mocha: 
+    version: ~> 0.10.2
+  dm-aggregates: 
     group: 
-    - :test
-    version: ">= 0"
+    - :default
+    version: ~> 0.10.2
+  dm-timestamps: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  dm-core: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  actionmailer: 
+    group: 
+    - :default
+    version: ~> 3.0.0.beta1
+    require: 
+    - action_mailer
+  actionpack: 
+    group: 
+    - :default
+    version: ~> 3.0.0.beta1
+    require: 
+    - action_pack
   RedCloth: 
     group: 
     - :default
     version: ">= 0"
+  dm-constraints: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  activesupport: 
+    group: 
+    - :default
+    version: ~> 3.0.0.beta1
+    require: 
+    - active_support
+  dm-migrations: 
+    group: 
+    - :default
+    version: ~> 0.10.2
+  do_sqlite3: 
+    group: 
+    - :default
+    version: ~> 0.10.1
 specs: 
+- text-hyphen: 
+    version: 1.0.0
 - builder: 
     version: 2.1.2
 - RedCloth: 
-    version: 4.2.2
-- text-hyphen: 
-    version: 1.0.0
+    version: 4.2.3
+- json_pure: 
+    version: 1.2.2
 - i18n: 
     version: 0.3.5
-- bundler: 
-    version: 0.9.9
-- arel: 
-    version: 0.2.1
-- will_paginate: 
-    version: 3.0.pre
-- factory_girl: 
-    version: 1.2.3
 - activemodel: 
     version: 3.0.0.beta1
-    source: 0
+    source: 1
+- rack-mount: 
+    version: 0.6.1
+- dm-observer: 
+    version: 0.10.3
+    source: 3
 - mime-types: 
     version: "1.16"
 - mail: 
@@ -54,52 +99,85 @@ specs:
     version: 1.0.0
 - erubis: 
     version: 2.6.5
+- stringex: 
+    version: 1.1.0
+- dm-aggregates: 
+    version: 0.10.3
+    source: 3
 - thor: 
     version: 0.13.4
-- sqlite3-ruby: 
-    version: 1.2.5
+- dm-validations: 
+    version: 0.10.3
+    source: 3
+- data_objects: 
+    version: 0.10.1
+- do_sqlite3: 
+    version: 0.10.1.1
+- rake: 
+    version: 0.8.7
+- railties: 
+    version: 3.0.0.beta1
+    source: 1
+- addressable: 
+    version: 2.1.1
+- dm-core: 
+    version: 0.10.3
+    source: 2
+- dm-active_model: 
+    version: 0.4.0
+- dm-constraints: 
+    version: 0.10.3
+    source: 3
+- dm-migrations: 
+    version: 0.10.3
+    source: 3
+- dm-timestamps: 
+    version: 0.10.3
+    source: 3
 - memcache-client: 
     version: 1.7.8
 - rack: 
     version: 1.1.0
 - rack-test: 
     version: 0.5.3
-- rack-mount: 
-    version: 0.5.2
 - actionpack: 
     version: 3.0.0.beta1
-    source: 0
-- rake: 
-    version: 0.8.7
-- mocha: 
-    version: 0.9.8
-- railties: 
-    version: 3.0.0.beta1
-    source: 0
+    source: 1
+- uuidtools: 
+    version: 2.1.1
 - text-format: 
     version: 1.0.0
 - actionmailer: 
     version: 3.0.0.beta1
-    source: 0
-- activerecord: 
-    version: 3.0.0.beta1
-    source: 0
-- activeresource: 
-    version: 3.0.0.beta1
-    source: 0
-- rails: 
-    version: 3.0.0.beta1
-    source: 0
+    source: 1
+- fastercsv: 
+    version: 1.5.1
+- dm-types: 
+    version: 0.10.3
+    source: 3
+- dm-rails: 
+    version: 0.10.2
+    source: 4
 - tzinfo: 
-    version: 0.3.16
+    version: 0.3.17
 - activesupport: 
     version: 3.0.0.beta1
-    source: 0
-hash: e33a93609acaf17202af726c69811f5fa0b98020
+    source: 1
+hash: 5707cd0c643a882c4eb5b8d6570075d8af9cae2d
 sources: 
-- Git: 
-    uri: git://github.com/rails/rails
-    git: git://github.com/rails/rails
-    ref: 020fdb28ee1d1bdb2dd1aa182869eb2e7c6115cb
 - Rubygems: 
     uri: http://gemcutter.org
+- Git: 
+    uri: git://github.com/rails/rails.git
+    ref: c507e16dba844c7b066d145bfd5c5d23e7a9c5ad
+- Git: 
+    uri: git://github.com/snusnu/dm-core.git
+    branch: active_support
+    ref: 3998d0682e4249fdf67355906320cf8311af2ca7
+- Git: 
+    uri: git://github.com/snusnu/dm-more.git
+    branch: active_support
+    ref: fa90ad9e9884a76f2cbc288780f62cfa4125a60d
+- Git: 
+    uri: git://github.com/datamapper/dm-rails.git
+    ref: f2b8ee6b2649e7a7efb8cf383ef245ba10b474f5
