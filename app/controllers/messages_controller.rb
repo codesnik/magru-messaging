@@ -23,10 +23,8 @@ class MessagesController < ApplicationController
   # GET /messages/1.json -> выдаст весь тред. возможно надо менять
   def show
     @thread = Message.find(params[:id]).thread
-    unless allowed_to_view?(@thread)
-      forbid_action
-      return
-    end
+
+    forbid! unless allowed_to_view?(@thread)
 
     @messages = @thread.thread_messages \
       .paginate(:page => params[:page], :per_page => MESSAGES_PER_PAGE)
@@ -48,10 +46,7 @@ class MessagesController < ApplicationController
   def reply
     @thread = Message.find(params[:id]).thread
 
-    unless allowed_to_view?(@thread)
-      forbid_action
-      return
-    end
+    forbid! unless allowed_to_view?(@thread)
 
     @message = @thread.new_reply(current_user)
     render :new
@@ -61,10 +56,8 @@ class MessagesController < ApplicationController
   def edit
     @message = Message.find(params[:id])
 
-    unless allowed_to_change?(@message)
-      forbid_action
-      return
-    end
+    forbid! unless allowed_to_view?(@message)
+    forbid! 'изменение запрещено: сообщение уже прочитано' unless allowed_to_change?(@message)
   end
 
   # POST /messages
@@ -88,12 +81,8 @@ class MessagesController < ApplicationController
   def update
     @message = Message.find(params[:id])
 
-    # TODO сделать отдельное сообщение на случай
-    # если сообщение прочитали после начала редактирования
-    unless allowed_to_change?(@message)
-      forbid_action
-      return
-    end
+    forbid! unless allowed_to_view?(@message)
+    forbid! 'изменение запрещено: сообщение уже прочитано' unless allowed_to_change?(@message)
 
     respond_to do |format|
       if @message.update_attributes(params[:message])
@@ -111,10 +100,7 @@ class MessagesController < ApplicationController
   def destroy
     @message = Message.find(params[:id])
 
-    unless allowed_to_change?(@message)
-      forbid_action
-      return
-    end
+    forbid! unless allowed_to_change?(@message)
 
     @message.destroy
 
@@ -126,7 +112,6 @@ class MessagesController < ApplicationController
 
   protected
 
-  # TODO сделать before filter, или что-то в духе
   def allowed_to_view?(message)
     [message.recipient, message.sender].include?(current_user)
   end
@@ -135,5 +120,21 @@ class MessagesController < ApplicationController
     current_user == message.sender && message.unread?
   end
   helper_method :allowed_to_view?, :allowed_to_change?
+
+  module Messaging
+    class NotAllowed < StandardError
+    end
+  end
+
+  def forbid! message="действие запрещено"
+    raise Messaging::NotAllowed, message
+  end
+
+  rescue_from Messaging::NotAllowed do |e|
+    respond_to do |format|
+      format.html { redirect_to messages_url, :alert => e.message }
+      format.json { head :forbidden }
+    end
+  end
 
 end
