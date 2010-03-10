@@ -16,4 +16,7 @@ MagruMessaging::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
+
+  # FIXME Enable forgery protection, there's a bug in edge rails3
+  config.action_controller.allow_forgery_protection    = true
 end

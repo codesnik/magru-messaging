@@ -30,4 +30,7 @@ MagruMessaging::Application.configure do
 
   # Enable threaded mode
   # config.threadsafe!
+
+  # FIXME Enable forgery protection, there's a bug in edge rails3
+  config.action_controller.allow_forgery_protection    = true
 end
