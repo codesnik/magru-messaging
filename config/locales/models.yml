@@ -8,7 +8,7 @@ ru:
       create: 'Создать'
       update: 'Изменить'
       submit: 'Сохранить'
-  activerecord:
+  activemodel:
     models:
       user: Пользователь
       message: Сообщение

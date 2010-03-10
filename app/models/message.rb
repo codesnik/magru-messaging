@@ -1,5 +1,6 @@
 class Message
   include DataMapper::Resource
+  extend ActiveModel::Translation
 
   property :id, Serial
   property :subject, String
